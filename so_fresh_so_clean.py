@@ -56,6 +56,11 @@ def df_cleaner(dataframe):
 
     # drop unit count, baths_half, columns with a majority null values
     df=df.drop(['unit_count','baths_half'], axis=1)
+    
+    #drop additional rows to focus on more useful data
+    df=df.drop(['lot_size'], axis=1)
+    df=df.loc[df['square_footage']>100]
+    df=df.loc[df['price']>20000]
 
     # impute missing observations
 
