@@ -71,7 +71,7 @@ def df_cleaner(dataframe):
     # square_footage (impute by avg by beds)
     df.square_footage.fillna(value=df.square_footage.mean(), inplace=True)
     # lot_size
-    df.lot_size.fillna(value=df.lot_size.mean(), inplace=True)
+    #df.lot_size.fillna(value=df.lot_size.mean(), inplace=True)
     # year_built
     df.year_built.fillna(value=df.year_built.mean(), inplace=True)
 
