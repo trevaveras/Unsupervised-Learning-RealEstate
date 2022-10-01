@@ -2,7 +2,7 @@
 # September 12, 2022
 
 
-def df_cleaner(dataframe):
+def df_cleaner():
     '''Returns a clean dataframe with no missing data or outliers,
     ready for further analysis steps.'''
 
@@ -16,14 +16,13 @@ def df_cleaner(dataframe):
     import os
     from scipy import stats
     import math
-
-
-
+    df=pd.read_csv(
+        './data/GA_LISTINGS_SALES_V2.csv')
 
 
 
     # drop first column
-    df=dataframe.iloc[:,1:]
+    df=df.iloc[:,1:]
 
     # strip property type from details feature column
     df.details=df.details.str.split(',', expand=True)[[0]]
@@ -57,12 +56,8 @@ def df_cleaner(dataframe):
     # drop unit count, baths_half, columns with a majority null values
     df=df.drop(['unit_count','baths_half'], axis=1)
     
-    #drop additional rows to focus on more useful data
-    df=df.drop(['lot_size'], axis=1)
-    df=df.loc[df['square_footage']>100]
-    df=df.loc[df['price']>20000]
-
-    # impute missing observations
+    
+        # impute missing observations
 
     # beds
     df.beds.fillna(value=df.beds.mean(), inplace=True)
@@ -74,6 +69,14 @@ def df_cleaner(dataframe):
     #df.lot_size.fillna(value=df.lot_size.mean(), inplace=True)
     # year_built
     df.year_built.fillna(value=df.year_built.mean(), inplace=True)
+    
+    
+    #drop additional rows to focus on more useful data
+    df=df.drop(['lot_size'], axis=1)
+    df=df.loc[df['square_footage']>100]
+    df=df.loc[df['price']>20000]
+
+
 
     # save a list of categorical cols just in case
     cats=[]
@@ -119,6 +122,11 @@ def df_cleaner(dataframe):
     # for col in df.columns:
     #     if col in cats:
     #         df[col]=df[col].astype(object)
+    
+    # rename lat long in listings
+    df=df.rename(columns={'latitude':'lat','longitude':'lon'})
+    #convert zip to object
+    df['zip']=df['zip'].astype(str)
     
     return df.reset_index(drop=True)
 
